@@ -1,25 +1,35 @@
-import logo from './logo.svg';
-import './App.css';
+import React from 'react'
 
-function App() {
+const App = () => {
+  const [quotes, setQuotes] = React.useState("")
+  console.log(quotes)
+
+  const [change, setChange] = React.useState(0)
+  
+  React.useEffect(() => {
+    fetch("https://api.quotable.io/random")
+      .then(res => res.json())
+      .then(data => setQuotes(data))
+  },[change])
+
+  function newQuote(){
+    setChange(count => count + 1)
+  }
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+      <main>
+        <div className='container'>
+          <div className='quotes'>
+              <h2>{quotes.content}</h2>
+            </div>
+            <div className='author'>
+              <button onClick={newQuote}>New Quotes</button>
+              <p>- {quotes.author}</p>
+            </div>
+        </div>
+      </main>
+    
+  )
 }
 
-export default App;
+export default App
